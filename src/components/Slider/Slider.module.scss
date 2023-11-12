@@ -98,6 +98,13 @@
     display: flex;
     background-color: #fff;
     overflow: hidden;
+  }
+  &__track_mini{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    background-color: #fff;
+    overflow: hidden;
     gap: 20px;
   }
   &__item{

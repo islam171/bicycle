@@ -1,8 +1,11 @@
 import FilterListIcon from "@mui/icons-material/FilterList";
+import React from 'react'
 
-const Sort = ({openSort, isOpenSort, dispatch, setSort, sort}) => {
+const Sort = React.memo(({openSort, isOpenSort, dispatch, setSort, sort}) => {
+
     return <>
-        <div className={"flex gap-3 relative"} onClick={openSort}>
+
+        <div className={"flex gap-3 relative cursor-pointer"} onClick={openSort}>
             <div>Сортировка</div>
             <div><FilterListIcon/></div>
             <div
@@ -19,6 +22,6 @@ const Sort = ({openSort, isOpenSort, dispatch, setSort, sort}) => {
             </div>
         </div>
     </>
-}
+})
 
 export default Sort

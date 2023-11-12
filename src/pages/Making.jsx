@@ -1,31 +1,29 @@
-import axios from "axios";
 import {useForm} from "react-hook-form";
 import BicycleMaking from "../components/Bicycle/BicycleMaking";
 import MenuBar from "../components/MenuBar";
+import {useDispatch, useSelector} from "react-redux";
+import {addOrder} from "../store/orderSlice";
 
 const Making = () => {
 
-    const {register, handleSubmit, setError, formState: {errors, isValid}} = useForm({
+    const dispatch = useDispatch()
+    const {token} = useSelector(state => state.user)
+    const {addresses} = useSelector(state => state.order)
+
+    const {register, handleSubmit} = useForm({
         defaultValues: {
-            name: '', phone: '', address: '', comment: '', email: ''
+            name: '', phone: '', addressId: '', comment: '', email: ''
         }, mode: 'onChange'
     })
 
-    const cartToOrder = [
-        {"_id": "64da598fd9fb4db9166662f3", "count": 2},
-        {"_id": "64e090fb0a06eff0ea1e69f5", "count": 3}
-    ]
+    const {makingCart, totalPrice} = useSelector(state => state.making)
 
     const onNewOrder = (values) => {
-        values.bicycles = cartToOrder
-        axios.post('http://localhost:3001/api/v1/bicycle', values, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGRhNGU4MzE1ODI2YjVjYjYwZGM4NzQiLCJpYXQiOjE2OTIwMjg1NDcsImV4cCI6MTY5NDYyMDU0N30.ps60IaHYICc5rqVORf6eNXfFIW23L9Kog_jpiBro59Y'
-            }
-        })
+        for(const item of makingCart){
+            values.bicycles = values.bicycles ? [...values.bicycles, {_id: item.cart.bicycle._id, count: item.count}]: [{_id: item.cart.bicycle._id, count: item.count}]
+        }
+        dispatch(addOrder({token, data: values}))
     }
-
 
     return <>
         <div className={"flex py-5 justify-between max-md:flex-col"}>
@@ -33,24 +31,13 @@ const Making = () => {
                 <h1 className={"text-2xl"}>Оформление заказа</h1>
                 <div className={"md:hidden border my-2"}>
                     <MenuBar>
-                        <div className={"px-2"} >
+                        <div className={"px-2"}>
                             <div className={"flex flex-col"}>
-                                <BicycleMaking name={"name"} price={300} count={1}/>
-                                <BicycleMaking name={"name"} price={300} count={2}/>
-                            </div>
-                            <div className={"border-t-2 border-b-2 py-5"}>
-                                <div className={"flex justify-between"}>
-                                    <div>Сумма по товарам</div>
-                                    <div className={"text-xl font-semibold"}>7 240 ₽</div>
-                                </div>
-                                <div className={"flex justify-between"}>
-                                    <div>Стоимость доставки</div>
-                                    <div className={"text-xl font-semibold"}>0 ₽</div>
-                                </div>
+                                {makingCart.map(item => <BicycleMaking key={item.cart._id} item={item}/>)}
                             </div>
                             <div className={"flex justify-between py-3"}>
                                 <div className={"text-xl font-light"}>Итого:</div>
-                                <div className={"text-xl font-semibold"}>0 ₽</div>
+                                <div className={"text-xl font-semibold"}>{totalPrice} ₽</div>
                             </div>
                         </div>
                     </MenuBar>
@@ -72,24 +59,6 @@ const Making = () => {
                             {...register('phone', {required: "Укажите телефон"})}
                             className={"border-2 border-gray-800 transition delay-50 h-12 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}
                         /><br/>
-                        <h2 className={"text-lg"}>Доставка</h2>
-                        <label htmlFor="address">Адрес</label>
-                        <select
-                            name="address"
-                            id=""
-                            {...register('addressId', {required: "Укажите адресс"})}
-                            className={"border-2 border-gray-800 transition delay-50 h-12 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}>
-                            <option value="address 1">address 1</option>
-                            <option value="address 2">address 2</option>
-                            <option value="address 3">address 3</option>
-                        </select><br/>
-                        <label htmlFor="comment">Комментарии к заказу</label>
-                        <textarea
-                            name={"comment"}
-                            {...register('comment')}
-                            className={"border-2 border-gray-800 transition delay-50 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}
-                        /><br/>
-                        <h2 className={"text-lg"}>Покупатель</h2>
                         <label htmlFor="email">Email</label>
                         <input
                             type={"text"}
@@ -97,6 +66,24 @@ const Making = () => {
                             {...register('email', {required: "Укажите почту"})}
                             className={"border-2 border-gray-800 transition delay-50 h-12 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}
                         /><br/>
+                        <h2 className={"text-lg"}>Доставка</h2>
+                        <label htmlFor="addressId">Адрес</label>
+                        <select
+                            name="addressId"
+                            id=""
+                            {...register('addressId', {required: "Укажите адресс"})}
+                            className={"border-2 border-gray-800 transition delay-50 h-12 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}>
+                            {addresses && addresses.map((address) => (
+                                <option key={address._id} value={`${address._id}`}>{address.country} {address.city} {address.street}</option>
+                            ))}
+                        </select><br/>
+                        <label htmlFor="comment">Комментарии к заказу</label>
+                        <textarea
+                            name={"comment"}
+                            {...register('comment')}
+                            className={"border-2 border-gray-800 transition delay-50 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}
+                        /><br/>
+
                         <button
                             type="submit"
                             className={"p-2 px-4 text-white text-lg mt-5 w-full"}
@@ -108,22 +95,11 @@ const Making = () => {
             </div>
             <div className={"px-2 max-md:hidden"} style={{flex: "1 0 50%"}}>
                 <div className={"flex flex-col"}>
-                    <BicycleMaking name={"name"} price={300} count={1}/>
-                    <BicycleMaking name={"name"} price={300} count={2}/>
+                    {makingCart.map(item => <BicycleMaking key={item.cart._id} item={item}/>)}
                 </div>
-                <div className={"border-t-2 border-b-2 py-5"}>
-                    <div className={"flex justify-between"}>
-                        <div>Сумма по товарам</div>
-                        <div className={"text-xl font-semibold"}>7 240 ₽</div>
-                    </div>
-                    <div className={"flex justify-between"}>
-                        <div>Стоимость доставки</div>
-                        <div className={"text-xl font-semibold"}>0 ₽</div>
-                    </div>
-                </div>
-                <div className={"flex justify-between py-3"}>
+                <div className={"border-t-2 flex justify-between py-3"}>
                     <div className={"text-xl font-light"}>Итого:</div>
-                    <div className={"text-xl font-semibold"}>0 ₽</div>
+                    <div className={"text-xl font-semibold"}>{totalPrice} ₽</div>
                 </div>
             </div>
         </div>

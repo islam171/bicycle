@@ -1,15 +1,14 @@
 import SearchIcon from '@mui/icons-material/Search';
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
-import PhoneIcon from '@mui/icons-material/Phone';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {openSidebarMenu} from "../../store/sidebarSlice";
 import {setSearch} from "../../store/filterSlice";
 import Title from "../Title";
+import {RiAdminFill} from "react-icons/ri"
 
 const Header = ({onClick}) => {
 
@@ -22,6 +21,8 @@ const Header = ({onClick}) => {
         dispatch(setSearch(''))
         e.target.value = ""
     }
+    const {token} = useSelector(state => state.user)
+    const {isAdmin} = useSelector(state => state.admin)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -35,7 +36,7 @@ const Header = ({onClick}) => {
 
     return <div onClick={onClick}>
         <div className="flex h-14 justify-between items-center gap-2">
-            <div className={"h-full flex items-center gap-2 w-36 cursor-pointer max-md:w-10"} onClick={() => dispatch(openSidebarMenu())}>
+            <div className={"h-full flex items-center gap-2 max-w-36 cursor-pointer max-md:w-10"} onClick={() => dispatch(openSidebarMenu())}>
                 <MenuIcon/>
                 <div className={"font-bold tracking-tighter text-sm max-md:hidden"}>Меню</div>
             </div>
@@ -52,18 +53,20 @@ const Header = ({onClick}) => {
                 </div>
             </div>
            <Title isVisibleInput={isVisibleInput}/>
-            <div className={"h-full flex items-center justify-end"}>
+            <div className={"h-full flex items-center max-w-36 justify-end"}>
                 <nav className={"flex gap-4 max-md:hidden"}>
                     {!isVisibleInput && (
                         <div onClick={ShowSearch}>
-                            <SearchIcon />
+                            <SearchIcon/>
                         </div>
                     )}
-                    <Link to={"/profile"}><PersonIcon/></Link>
+                    {isAdmin && <Link to={"/admin"}><RiAdminFill size={24}/></Link>}
+                    <Link to={token ? "/profile" : "/auth/login"}><PersonIcon/></Link>
                     <Link to={"/cart"}><ShoppingCartIcon/></Link>
-                    <SignalCellularAltIcon/>
                 </nav>
-                <div className={"md:hidden"}><PhoneIcon/></div>
+                <div className={"md:hidden"}>
+                    <Link to={token ? "/profile" : "/auth/login"}><PersonIcon/></Link>
+                </div>
             </div>
         </div>
     </div>

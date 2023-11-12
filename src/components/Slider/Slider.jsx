@@ -8,14 +8,15 @@ const Slider = ({items, width}) => {
     const [next, setNext] = useState(false)
 
     const [currentIndex, setCurrentIndex] = useState(0)
-    const colItem = 2
+    const colItem = 3
     const itemWidth = width / colItem
+    const itemHeight = itemWidth * (9/16)
 
     useEffect(() => {
         slider.current.childNodes.forEach((element) => {
-            element.style = `transform: translate(-${currentIndex*itemWidth}px); min-width: ${itemWidth}px; `
+            element.style = `transform: translate(-${currentIndex*itemWidth}px); min-width: ${itemWidth}px; min-height: ${itemHeight}`
         })
-    }, [currentIndex, itemWidth])
+    }, [currentIndex, itemWidth, itemHeight])
 
     const prevHandler = () => {
         const isFirstSlide = currentIndex === 0
@@ -37,7 +38,7 @@ const Slider = ({items, width}) => {
             <button className={styles.slider__button} disabled={prev} onClick={prevHandler}><div></div></button>
             <div className={styles.slider__track} ref={slider}>
                 {items.map((item, index) => (
-                    <div className={styles.slider__item} style={{minWidth: `${itemWidth}`}} key={index}>
+                    <div className={styles.slider__item} style={{minWidth: `${itemWidth}`, minHeight: `${itemHeight}`}} key={index}>
                         <div className={styles.slider__body}><img src={item.img} alt=""/></div>
                     </div>
                 ))}

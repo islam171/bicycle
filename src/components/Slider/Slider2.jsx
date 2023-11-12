@@ -1,6 +1,6 @@
 import styles from './Slider.module.scss'
 import {useEffect, useRef, useState} from "react";
-import Bicycle from "../Bicycle";
+import Bicycle from "../Bicycle/Bicycle";
 
 const Slider2 = ({items, width, status, error}) => {
 
@@ -8,9 +8,10 @@ const Slider2 = ({items, width, status, error}) => {
     const [prev, setPrev] = useState(false)
     const [next, setNext] = useState(false)
 
+    let fixedColItem = Math.floor(width / 170)
     const [currentIndex, setCurrentIndex] = useState(0)
-    const colItem = items.length < 4 ? items.length : 4
-    const itemWidth = (width / colItem) - 20
+    let colItem = items.length < fixedColItem ? items.length : fixedColItem
+    let itemWidth = (width / colItem) - 20
 
 
     useEffect(() => {
@@ -50,7 +51,7 @@ const Slider2 = ({items, width, status, error}) => {
                 </div>
             </div>
             <div className={styles.slider} style={{width: `${width}px`}}>
-                <div className={styles.slider__track} ref={slider}>
+                <div className={styles.slider__track_mini} ref={slider}>
                     {status !== 'loading' ? (!error ? items.map((bike) =>
                             <div key={bike._id} className={styles.slider__item2} style={{minWidth: `${itemWidth}px`}}>
                                 <Bicycle bike={bike}/>

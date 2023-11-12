@@ -1,9 +1,14 @@
 import {memo} from "react";
+import {LuArrowUpDown} from "react-icons/lu"
 
 const Order = memo(({openOrder, isOpenOrder, dispatch, order, sort, setOrder}) => {
+
     return <>
-        <div className={"flex gap-3 relative"} onClick={openOrder}>
-            <div className={"bg-gray-300 h-6 w-6"}></div>
+        <div className={"flex gap-3 relative items-center cursor-pointer"} onClick={openOrder}>
+            <div className={"h-6 w-6 flex justify-center items-center"}>
+                <LuArrowUpDown/>
+            </div>
+
             <div
                 className={`absolute top-full right-0 w-40 text-sm shadow-md cursor-pointer z-10 ${!isOpenOrder && 'hidden'}`}>
                 <div

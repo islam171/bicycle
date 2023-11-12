@@ -23,7 +23,7 @@ const MenuBar = ({children, title}) => {
     };
 
     return <>
-        <div className={"relative"} ref={sideBlock} onClick={handleClick}>
+        <div className={"relative border-b"} ref={sideBlock} onClick={handleClick}>
             <div className={"relative py-5 px-2"}>
                 <div>
                     {title}

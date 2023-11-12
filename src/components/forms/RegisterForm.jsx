@@ -1,31 +1,32 @@
 import {useForm} from "react-hook-form";
-import axios from "axios";
+import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {registerUser} from "../../store/userSlice";
 
 const RegisterForm = () => {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const {register, handleSubmit, setError, formState: {errors, isValid}} = useForm({
+    const {register, handleSubmit} = useForm({
         defaultValues: {
-            name: '', password: ''
+            username: '', password: ''
         }, mode: 'onChange'
     })
 
+    const dispatch = useDispatch()
+    const {error} = useSelector(state => state.user)
+
     const onSubmit = (values) => {
-        axios.post('http://localhost:3001/api/v1/bicycle', values, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGRhNGU4MzE1ODI2YjVjYjYwZGM4NzQiLCJpYXQiOjE2OTIwMjg1NDcsImV4cCI6MTY5NDYyMDU0N30.ps60IaHYICc5rqVORf6eNXfFIW23L9Kog_jpiBro59Y'
-            }
-        })
+        dispatch(registerUser(values))
     }
 
     return (<div>
+            {error && <div>{error.message}</div>}
             <div className={"my-5 text-2xl font-medium"}>Регестрация</div>
             <form action="" onSubmit={handleSubmit(onSubmit)} className={"max-w-xl"}>
-                <label htmlFor="name">Логмн</label>
+                <label htmlFor="username">Логмн</label>
                 <input
-                    type={"text"} name={"name"}
-                    {...register('name', {required: "Укажите имя продукта"})}
+                    type={"text"} name={"username"}
+                    {...register('username', {required: "Укажите имя продукта"})}
                     className={"border-2 border-gray-800 transition delay-50 h-12 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}
                 /><br/>
                 <label htmlFor="password">Пароль</label>
@@ -37,11 +38,14 @@ const RegisterForm = () => {
                 /><br/>
                 <button
                     type="submit"
-                    className={"p-2 px-4 text-white text-xl mt-5 "}
+                    className={"p-2 px-4 text-white text-xl mt-2"}
                     style={{backgroundColor: '#1b2738'}}>Войти
                 </button>
                 <br/>
             </form>
+            <div className={"mt-5 delay-500 transition hover:underline "}>
+                <Link to={"/auth/login"}>Авторизоватся</Link>
+            </div>
         </div>
     )
 }

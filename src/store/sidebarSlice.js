@@ -4,7 +4,9 @@ const sideSlice = createSlice({
     name: 'sides',
     initialState: {
         isOpenSidebarFilter: false,
-        isOpenSidebarMenu: false
+        isOpenSidebarMenu: false,
+        isOpenSidebarFilterAdmin: false,
+        isOpenInputSidebar: false
     },
     reducers: {
         openSidebarFilter(state, action){
@@ -24,9 +26,21 @@ const sideSlice = createSlice({
         },
         toggleSidebarMenu(state, action){
             state.isOpenSidebarMenu = !state.isOpenSidebarMenu
+        },
+        openSidebarFilterAdmin(state, action){
+            state.isOpenSidebarFilterAdmin = true
+        },
+        closeSidebarFilterAdmin(state, action){
+            state.isOpenSidebarFilterAdmin = false
+        },
+        toggleSidebarFilterAdmin(state, action){
+            state.isOpenSidebarFilterAdmin = !state.isOpenSidebarFilterAdmin
+        },
+        toggleInputSidebar(state, action){
+            state.isOpenInputSidebar = !state.isOpenInputSidebar
         }
     }
 })
 
-export const {openSidebarFilter, closeSidebarFilter, toggleSidebarFilter, openSidebarMenu, closeSidebarMenu, toggleSidebarMenu} = sideSlice.actions
+export const {openSidebarFilter, closeSidebarFilter, toggleSidebarFilter, openSidebarMenu, closeSidebarMenu, toggleSidebarMenu, openSidebarFilterAdmin, closeSidebarFilterAdmin, toggleSidebarFilterAdmin, toggleInputSidebar} = sideSlice.actions
 export default sideSlice.reducer
