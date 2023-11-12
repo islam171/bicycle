@@ -18,7 +18,7 @@ const Profile = () => {
     }
 
     return <>
-        <div className={"flex pt-10 max-sm: flex-col"}>
+        <div className={"flex pt-10 max-sm:flex-col"}>
             <div className={"w-56 flex flex-col gap-1"}>
                 <Link className={"hover:underline"} to={"/profile"}>Личный кабинет</Link>
                 {isAdmin && <Link className={"hover:underline"} to={"/admin"}>Админка</Link>}
