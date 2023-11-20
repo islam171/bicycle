@@ -6,7 +6,7 @@ import {useCallback, useState} from "react";
 import AddAdminItem from "../../../components/forms/Admin/addAdminItem";
 
 const Material = () => {
-    const {materials} = useSelector(state => state.material)
+    const {materials, error} = useSelector(state => state.material)
     const {token} = useSelector(state => state.user)
     const dispatch = useDispatch()
 
@@ -20,6 +20,10 @@ const Material = () => {
     const closeModal = useCallback(() => {
         isOpenModal && setIsOpenModel(false)
     }, [isOpenModal])
+
+    if(error){
+        return <>{error}</>
+    }
 
     return <>
         <div className={"max-w-3xl m-auto my-3"}>

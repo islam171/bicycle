@@ -8,7 +8,7 @@ const Making = () => {
 
     const dispatch = useDispatch()
     const {token} = useSelector(state => state.user)
-    const {addresses} = useSelector(state => state.order)
+    const {addresses, error} = useSelector(state => state.order)
 
     const {register, handleSubmit} = useForm({
         defaultValues: {
@@ -23,6 +23,10 @@ const Making = () => {
             values.bicycles = values.bicycles ? [...values.bicycles, {_id: item.cart.bicycle._id, count: item.count}]: [{_id: item.cart.bicycle._id, count: item.count}]
         }
         dispatch(addOrder({token, data: values}))
+    }
+
+    if(error){
+        return <>{error}</>
     }
 
     return <>

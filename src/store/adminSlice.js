@@ -1,11 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "./api";
 
 export const getIsAdmin = createAsyncThunk(
     'admin/getIsAdmin',
     async function(token, {rejectWithValue}){
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/isAdmin`, {headers: {'Authorization': token}})
+            const response = await axios.get(`${baseURL}/api/v1/isAdmin`, {headers: {'Authorization': token}})
             if(response.status === 403){
                 return false
             }
@@ -24,7 +25,7 @@ export const fetchBicyclesAdmin = createAsyncThunk(
     "admin/fetchBicyclesAdmin",
     async function (obj, {rejectWithValue}) {
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/bicycle?_category=${obj.category}&_search=${obj.search}&_sort=${obj.sort}&_order=${obj.order}&_color=${obj.color}&_frameMaterial=${obj.material}&_maxPrice=${obj.maxPrice}&_minPrice=${obj.minPrice}&_page=${obj.page}&_limit=${obj.limit}`)
+            const response = await axios.get(`${baseURL}/api/v1/bicycle?_category=${obj.category}&_search=${obj.search}&_sort=${obj.sort}&_order=${obj.order}&_color=${obj.color}&_frameMaterial=${obj.material}&_maxPrice=${obj.maxPrice}&_minPrice=${obj.minPrice}&_page=${obj.page}&_limit=${obj.limit}`)
             if (response.statusText !== 'OK') {
                 throw new Error('ServerError!')
             }
@@ -40,7 +41,7 @@ export const getCountBicyclesAdmin = createAsyncThunk(
     "admin/getCountBicyclesAdmin",
     async function (obj, {rejectWithValue}) {
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/bicycle?_category=${obj.category}&_search=${obj.search}&_sort=${obj.sort}&_order=${obj.order}&_color=${obj.color}&_frameMaterial=${obj.material}&_maxPrice=${obj.maxPrice}&_minPrice=${obj.minPrice}`)
+            const response = await axios.get(`${baseURL}/api/v1/bicycle?_category=${obj.category}&_search=${obj.search}&_sort=${obj.sort}&_order=${obj.order}&_color=${obj.color}&_frameMaterial=${obj.material}&_maxPrice=${obj.maxPrice}&_minPrice=${obj.minPrice}`)
             if (response.statusText !== 'OK') {
                 throw new Error('ServerError!')
             }
@@ -56,7 +57,7 @@ export const deleteBicyclesAdmin = createAsyncThunk(
     "admin/deleteBicyclesAdmin",
     async function ({id, token}, {rejectWithValue}) {
         try {
-            const response = await axios.delete(`http://localhost:3001/api/v1/bicycle/${id}`, {headers: {'Authorization': token}})
+            const response = await axios.delete(`${baseURL}/api/v1/bicycle/${id}`, {headers: {'Authorization': token}})
             if (response.statusText !== 'OK') {
                 throw new Error('ServerError!')
             }
@@ -87,7 +88,7 @@ export const updateBicyclesAdmin = createAsyncThunk(
             formData.append("folding", data.folding);
             formData.append("seat", data.seat);
 
-            const response = await axios.patch(`http://localhost:3001/api/v1/bicycle/${id}`, formData, {headers: {'Authorization': token}})
+            const response = await axios.patch(`${baseURL}/api/v1/bicycle/${id}`, formData, {headers: {'Authorization': token}})
             if (response.statusText !== 'OK') {
                 throw new Error('ServerError!')
             }
@@ -121,7 +122,7 @@ export const addBicycles = createAsyncThunk(
             formData.append("folding", values.folding);
             formData.append("seat", values.seat);
 
-            const response = await axios.post(`http://localhost:3001/api/v1/bicycle`, formData,
+            const response = await axios.post(`${baseURL}/api/v1/bicycle`, formData,
                 {headers: {
                         'Authorization': token,
                         "Content-Type": "multipart/form-data",

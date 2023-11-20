@@ -1,11 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "../api";
 
 export const fetchPrice = createAsyncThunk(
     "price/fetchPrice",
     async function (_, {rejectWithValue}){
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/bicycle/price`)
+            const response = await axios.get(`${baseURL}/api/v1/bicycle/price`)
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }

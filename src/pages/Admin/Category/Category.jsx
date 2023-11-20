@@ -8,7 +8,7 @@ import {useCallback, useState} from "react";
 
 const Category = () => {
 
-    const {categories} = useSelector(state => state.category)
+    const {categories, error} = useSelector(state => state.category)
     const {token} = useSelector(state => state.user)
     const dispatch = useDispatch()
 
@@ -22,6 +22,10 @@ const Category = () => {
     const closeModal = useCallback(() => {
         isOpenModal && setIsOpenModel(false)
     }, [isOpenModal])
+
+    if(error){
+        return <>{error}</>
+    }
 
     return <>
         <div className={"max-w-3xl m-auto my-3"}>

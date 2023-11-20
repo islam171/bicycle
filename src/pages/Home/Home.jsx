@@ -11,9 +11,22 @@ const Home = () => {
 
     const [bicycle, setBicycle] = useState([])
     const [error, setError] = useState(null)
+    const [loading, setLoading] = useState(true)
+
+
+    async function fetchBicycle() {
+        try{
+            const {data} = await axios.get('http://localhost:3001/api/v1/bicycle?_limit=12')
+            setBicycle(data)
+        }catch (e){
+            setError(e)
+        }finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/v1/bicycle?_limit=12').then((res) => setBicycle(res.data)).catch((e) => setError(e))
+        fetchBicycle()
     }, [])
 
 
@@ -22,9 +35,9 @@ const Home = () => {
             {/*<Slider items={array} width={size.clientWidth}/>*/}
             <div className={"mx-auto"} style={{maxWidth: '764px'}}>
                 <div className={styles.list} >
-                    {bicycle ? (
-                        bicycle.map((bike) =><Bicycle key={bike._id} bike={bike} dispatch={dispatch}/> )
-                    ) : (<>{error.message}</>)  }
+                    {!loading ? (!error ? (
+                        bicycle && bicycle.map((bike) =><Bicycle key={bike._id} bike={bike} dispatch={dispatch}/> )
+                    ) : (<>{error.message}</>)): <>Загрузка...</>}
                 </div>
                 <div className={"my-5 flex mx-auto justify-center gap-2 items-center cursor-pointer"}>
                     <Link to={"Katalog"} className={"text-xl"}>Смотреть все</Link>

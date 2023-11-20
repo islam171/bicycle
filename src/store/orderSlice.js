@@ -1,11 +1,14 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "./api";
+
+
 
 export const getOrders = createAsyncThunk(
     "order/getOrders",
     async function(token, {rejectWithValue}){
         try{
-            const response = await axios.get('http://localhost:3001/api/v1/order', {headers: {"Authorization": token}})
+            const response = await axios.get(`${baseURL}/api/v1/order`, {headers: {"Authorization": token}})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -20,7 +23,7 @@ export const addOrder = createAsyncThunk(
     "order/addOrder",
     async function({token, data}, {rejectWithValue}){
         try{
-            const response = await axios.post('http://localhost:3001/api/v1/order', data,{headers: {"Authorization": token}})
+            const response = await axios.post(`${baseURL}/api/v1/order`, data,{headers: {"Authorization": token}})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -35,7 +38,7 @@ export const getAddress = createAsyncThunk(
     "order/getAddress",
     async function(token, {rejectWithValue}){
         try{
-            const response = await axios.get('http://localhost:3001/api/v1/address', {headers: {"Authorization": token}})
+            const response = await axios.get(`${baseURL}/api/v1/address`, {headers: {"Authorization": token}})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }

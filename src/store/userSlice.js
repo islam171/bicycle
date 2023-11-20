@@ -1,12 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 import {getIsAdmin} from "./adminSlice";
+import {baseURL} from "./api";
 
 export const login = createAsyncThunk(
     "user/login",
     async function({username, password}, {rejectWithValue, dispatch}){
         try{
-            const response = await axios.post('http://localhost:3001/api/v1/auth/login', {username, password})
+            const response = await axios.post(`${baseURL}/api/v1/auth/login`, {username, password})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }else{
@@ -24,10 +25,11 @@ export const registerUser = createAsyncThunk(
     "user/register",
     async function({username, password}, {rejectWithValue, dispatch}){
         try{
-            const response = await axios.post('http://localhost:3001/api/v1/auth/register', {username, password})
+            const response = await axios.post(`${baseURL}/api/v1/auth/register`, {username, password})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
+
             return response.data
         }catch (e) {
             return rejectWithValue(e.response.data)
@@ -39,7 +41,7 @@ export const getUserData = createAsyncThunk(
     "user/getUserData",
     async function(token, {rejectWithValue}){
         try{
-            const response = await axios.get('http://localhost:3001/api/v1/auth/me', {headers: {"Authorization": token}})
+            const response = await axios.get(`${baseURL}/api/v1/auth/me`, {headers: {"Authorization": token}})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -54,7 +56,7 @@ export const fetchUsers = createAsyncThunk(
     "user/fetchUser",
     async function (token, {rejectWithValue}){
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/users`, {headers: {"Authorization": token}})
+            const response = await axios.get(`${baseURL}/api/v1/users`, {headers: {"Authorization": token}})
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -73,7 +75,7 @@ export const addUser = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.post(`http://localhost:3001/api/v1/user`, formData,
+            const response = await axios.post(`${baseURL}/api/v1/user`, formData,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -90,7 +92,7 @@ export const deleteUser = createAsyncThunk(
     "user/deleteUser",
     async function ({_id, token}, {rejectWithValue}) {
         try {
-            const response = await axios.delete(`http://localhost:3001/api/v1/user/${_id}`,
+            const response = await axios.delete(`${baseURL}/api/v1/user/${_id}`,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -111,7 +113,7 @@ export const updateUser = createAsyncThunk(
             const formData = new FormData();
             formData.append("username", values.username);
             formData.append("password", values.password);
-            const response = await axios.patch(`http://localhost:3001/api/v1/user/${_id}`, formData,
+            const response = await axios.patch(`${baseURL}/api/v1/user/${_id}`, formData,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -134,6 +136,7 @@ const userSlice = createSlice({
         error: null,
         status: null,
         isAuth: false,
+        message: ''
     },
     reducers: {
         logout(state, action){
@@ -221,10 +224,12 @@ const userSlice = createSlice({
         [registerUser.fulfilled]: (state, action) => {
             state.status = 'resolved';
             state.error = null;
+            state.message = "Добавлено"
         },
         [registerUser.rejected]: (state, action) => {
             state.status = 'rejected';
             state.error = action.payload;
+            state.message = action.payload;
         }
     }
 

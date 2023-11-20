@@ -13,7 +13,7 @@ const RegisterForm = () => {
     })
 
     const dispatch = useDispatch()
-    const {error} = useSelector(state => state.user)
+    const {error, message} = useSelector(state => state.user)
 
     const onSubmit = (values) => {
         dispatch(registerUser(values))
@@ -21,6 +21,7 @@ const RegisterForm = () => {
 
     return (<div>
             {error && <div>{error.message}</div>}
+            <>{message}</>
             <div className={"my-5 text-2xl font-medium"}>Регестрация</div>
             <form action="" onSubmit={handleSubmit(onSubmit)} className={"max-w-xl"}>
                 <label htmlFor="username">Логмн</label>
@@ -31,7 +32,7 @@ const RegisterForm = () => {
                 /><br/>
                 <label htmlFor="password">Пароль</label>
                 <input
-                    type={"text"}
+                    type={"password"}
                     name={"password"}
                     {...register('password', {required: "Укажите цену"})}
                     className={"border-2 border-gray-800 transition delay-50 h-12 w-full mb-5 p-2 focus:outline-none focus:border-slate-300 focus:shadow-slate-300"}

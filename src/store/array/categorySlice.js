@@ -1,11 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "../api";
 
 export const fetchCategory = createAsyncThunk(
     "category/fetchCategory",
     async function (_, {rejectWithValue}){
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/category`)
+            const response = await axios.get(`${baseURL}/api/v1/category`)
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -24,7 +25,7 @@ export const addCategory = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.post(`http://localhost:3001/api/v1/category`, formData,
+            const response = await axios.post(`${baseURL}/api/v1/category`, formData,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -41,7 +42,7 @@ export const deleteCategory = createAsyncThunk(
     "category/deleteCategory",
     async function ({_id, token}, {rejectWithValue}) {
         try {
-            const response = await axios.delete(`http://localhost:3001/api/v1/category/${_id}`,
+            const response = await axios.delete(`${baseURL}/api/v1/category/${_id}`,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -61,7 +62,7 @@ export const updateCategory = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.patch(`http://localhost:3001/api/v1/category/${_id}`, formData,
+            const response = await axios.patch(`${baseURL}/api/v1/category/${_id}`, formData,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {

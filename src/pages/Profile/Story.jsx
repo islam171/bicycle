@@ -11,14 +11,18 @@ const Story = ({token}) => {
         dispatch(getOrders(token))
     }, [token, dispatch])
 
-    const {orders} = useSelector(state => state.order)
+    const {orders, loading, error} = useSelector(state => state.order)
+
+    if(error){
+        return <>{error}</>
+    }
 
     return <>
         <div className={"text-lg my-1"}>
             История заказов
         </div>
         <div>
-            {orders && orders.map((order) => <div key={order._id} className={"border p-2"}>
+            {!loading ? (orders && orders.map((order) => <div key={order._id} className={"border p-2"}>
                 <div className={"flex gap-5"}>
                     <div>Номер заказа</div>
                     <Link to={`/order/${order._id}`}>{order._id}</Link>
@@ -27,7 +31,8 @@ const Story = ({token}) => {
                     <div>Дата</div>
                     <div>{order.createdAt}</div>
                 </div>
-            </div>)}
+            </div>)) : <>Загрузка...</>}
+
         </div>
     </>
 }

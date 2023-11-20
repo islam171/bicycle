@@ -1,11 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "../api";
 
 export const fetchMaterial = createAsyncThunk(
     "material/fetchMaterial",
     async function (_, {rejectWithValue}){
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/frame`)
+            const response = await axios.get(`${baseURL}/api/v1/frame`)
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -24,7 +25,7 @@ export const addMaterial = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.post(`http://localhost:3001/api/v1/material`, formData,
+            const response = await axios.post(`${baseURL}/api/v1/material`, formData,
                 {headers: {'Authorization': token,}})
 
             if (response.statusText !== 'OK') {
@@ -42,7 +43,7 @@ export const deleteMaterial = createAsyncThunk(
     "material/deleteMaterial",
     async function ({_id, token}, {rejectWithValue}) {
         try {
-            const response = await axios.delete(`http://localhost:3001/api/v1/frame/${_id}`,
+            const response = await axios.delete(`${baseURL}/api/v1/frame/${_id}`,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -62,7 +63,7 @@ export const updateMaterial = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.patch(`http://localhost:3001/api/v1/frame/${_id}`, formData,
+            const response = await axios.patch(`${baseURL}/api/v1/frame/${_id}`, formData,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {

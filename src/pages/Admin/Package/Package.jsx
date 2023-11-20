@@ -21,6 +21,7 @@ const Package = () => {
         isOpenModal && setIsOpenModel(false)
     }, [isOpenModal])
 
+
     return <>
         <div className={"max-w-3xl m-auto my-3"}>
             <div className={"bg-white fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"}>

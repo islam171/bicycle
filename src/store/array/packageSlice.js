@@ -1,12 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "../api";
 
 
 export const fetchPackage = createAsyncThunk(
     "price/fetchPackages",
     async function (_, {rejectWithValue}){
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/package`)
+            const response = await axios.get(`${baseURL}/api/v1/package`)
             if(response.statusText !== 'OK'){
                 throw new Error('ServerError!')
             }
@@ -25,7 +26,7 @@ export const addPackage = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.post(`http://localhost:3001/api/v1/package`, formData,
+            const response = await axios.post(`${baseURL}/api/v1/package`, formData,
                 {headers: {'Authorization': token,}})
 
             if (response.statusText !== 'OK') {
@@ -43,7 +44,7 @@ export const deletePackage = createAsyncThunk(
     "package/deletePackage",
     async function ({_id, token}, {rejectWithValue}) {
         try {
-            const response = await axios.delete(`http://localhost:3001/api/v1/package/${_id}`,
+            const response = await axios.delete(`${baseURL}/api/v1/package/${_id}`,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {
@@ -63,7 +64,7 @@ export const updatePackage = createAsyncThunk(
         try {
             const formData = new FormData();
             formData.append("name", values.name);
-            const response = await axios.patch(`http://localhost:3001/api/v1/package/${_id}`, formData,
+            const response = await axios.patch(`${baseURL}/api/v1/package/${_id}`, formData,
                 {headers: {'Authorization': token}})
 
             if (response.statusText !== 'OK') {

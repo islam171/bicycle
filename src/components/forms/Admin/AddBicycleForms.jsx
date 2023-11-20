@@ -27,6 +27,7 @@ const AddBicycleForms = () => {
     })
 
     const {token} = useSelector(state => state.user)
+    const {error} = useSelector(state => state.bicycle)
     const dispatch = useDispatch()
 
     const onSubmit = (values) => {
@@ -64,6 +65,9 @@ const AddBicycleForms = () => {
     }, [files])
 
 
+    if(error){
+        return <>{error}</>
+    }
 
     return (<div>
         <div className={"my-5 text-2xl font-medium"}>Добавление велосипеда</div>

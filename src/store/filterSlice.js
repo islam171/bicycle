@@ -1,11 +1,12 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import {baseURL} from "./api";
 
 export const fetchBicycles = createAsyncThunk(
     "filter/fetchBicycles",
     async function (obj, {rejectWithValue}) {
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/bicycle?_category=${obj.category}&_search=${obj.search}&_sort=${obj.sort}&_order=${obj.order}&_color=${obj.color}&_frameMaterial=${obj.material}&_maxPrice=${obj.maxPrice}&_minPrice=${obj.minPrice}&_page=${obj.page}&_limit=${obj.limit}`)
+            const response = await axios.get(`${baseURL}/api/v1/bicycle?_category=${obj.category}&_search=${obj.search}&_sort=${obj.sort}&_order=${obj.order}&_color=${obj.color}&_frameMaterial=${obj.material}&_maxPrice=${obj.maxPrice}&_minPrice=${obj.minPrice}&_page=${obj.page}&_limit=${obj.limit}`)
             if (response.statusText !== 'OK') {
                 throw new Error('ServerError!')
             }
@@ -21,7 +22,7 @@ export const getCountBicycles = createAsyncThunk(
     "filter/getCountBicycles",
     async function (_, {rejectWithValue}) {
         try {
-            const response = await axios.get(`http://localhost:3001/api/v1/bicycle`)
+            const response = await axios.get(`${baseURL}/api/v1/bicycle`)
             if (response.statusText !== 'OK') {
                 throw new Error('ServerError!')
             }
