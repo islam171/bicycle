@@ -13,6 +13,7 @@ const SidebarHeaderMobile = ({sidebar}) => {
 
     const {isOpenInputSidebar} = useSelector(state => state.sideBar)
     const dispatch = useDispatch()
+    const {token} = useSelector(state => state.user)
 
     return <>
         <div className={"relative md:hidden"}>
@@ -21,7 +22,7 @@ const SidebarHeaderMobile = ({sidebar}) => {
                 <div onClick={() => dispatch(toggleInputSidebar())}>
                     <SearchIcon/>
                 </div>
-                <Link to={"/profile"}><PersonIcon
+                <Link to={token ? "/profile" : "/auth/login"}><PersonIcon
                     onClick={() => {
                         sidebar === "adminFilter" && dispatch(closeSidebarFilterAdmin())
                         sidebar === "menu" && dispatch(closeSidebarMenu())
