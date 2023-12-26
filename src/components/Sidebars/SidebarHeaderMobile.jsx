@@ -4,7 +4,6 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import SignalCellularAltIcon from "@mui/icons-material/SignalCellularAlt";
 import InputSearchSidebar from "../Inputs/InputSearchSidebar";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";

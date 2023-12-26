@@ -9,6 +9,9 @@ import {BsFillCartFill, BsCart} from 'react-icons/bs'
 import React from 'react'
 
 const Footer = React.memo( ({onClick}) => {
+
+    const {token} = useSelector(state => state.user)
+
     return <div className={"h-10"} onClick={onClick}>
         <div className={"max-md:fixed w-full max-md:bottom-0 bg-white left-0"}>
             <div className={"max-md:hidden"}>
@@ -59,7 +62,7 @@ const Footer = React.memo( ({onClick}) => {
                 </Link>
                 <Link to={"profile"}>
                     <Routes>
-                        <Route path="/profile/*" element={<BiSolidUser size={20}/> }/>
+                        <Route path={token ? "/profile/*" : "/auth/login"} element={<BiSolidUser size={20}/> }/>
                         <Route path="/auth/*" element={<BiSolidUser size={20}/> }/>
                         <Route path="/" element={<BiUser size={20}/> }/>
                         <Route path="/cart" element={<BiUser size={20}/> }/>
