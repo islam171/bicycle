@@ -60,7 +60,7 @@ const Footer = React.memo( ({onClick}) => {
                         <Route path="/" element={<BsCart size={20}/> }/>
                     </Routes>
                 </Link>
-                <Link to={"profile"}>
+                <Link to={token ? "/profile/*" : "/auth/login"}>
                     <Routes>
                         <Route path={token ? "/profile/*" : "/auth/login"} element={<BiSolidUser size={20}/> }/>
                         <Route path="/auth/*" element={<BiSolidUser size={20}/> }/>
