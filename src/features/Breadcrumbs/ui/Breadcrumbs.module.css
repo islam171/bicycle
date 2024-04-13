@@ -1,0 +1,7 @@
+.Breadcrumb ul {
+	display: flex;
+}
+
+.Breadcrumb__item {
+	display: flex;
+}
